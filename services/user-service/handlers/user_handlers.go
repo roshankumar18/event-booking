@@ -25,6 +25,10 @@ func RegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "email is required"})
 		return
 	}
+	if user.Role == models.Creator || user.Role == models.Booker {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "role is required"})
+		return
+	}
 	var existingUser models.User
 	userExists := database.DB.Where("email = ?", user.Email).First(&existingUser)
 	if userExists.RowsAffected > 0 {
