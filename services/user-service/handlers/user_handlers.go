@@ -56,7 +56,7 @@ func LoginUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&inputUser); err != nil {
 		var ve validator.ValidationErrors
 		if ok := errors.As(err, &ve); ok {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input", "details": translateValidationErrors(ve)})
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input", "details": utils.TranslateValidationErrors(ve)})
 			return
 		}
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data", "details": err.Error()})
@@ -78,12 +78,4 @@ func LoginUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not generate token"})
 	}
 	c.JSON(http.StatusOK, gin.H{"token": token})
-}
-
-func translateValidationErrors(ve validator.ValidationErrors) map[string]string {
-	errs := make(map[string]string)
-	for _, fe := range ve {
-		errs[fe.Field()] = fe.Tag()
-	}
-	return errs
 }
