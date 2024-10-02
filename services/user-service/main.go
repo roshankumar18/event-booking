@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/roshankumar18/event-booking/user-service/database"
-	"github.com/roshankumar18/event-booking/user-service/routes"
+	"github.com/roshankumar18/event-booking/services/user-service/database"
+	"github.com/roshankumar18/event-booking/services/user-service/routes"
 )
 
 func main() {

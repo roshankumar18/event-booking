@@ -6,8 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/roshankumar18/event-booking/user-service/database"
-	"github.com/roshankumar18/event-booking/user-service/models"
+	"github.com/roshankumar18/event-booking/services/user-service/database"
+	"github.com/roshankumar18/event-booking/services/user-service/models"
+	"github.com/roshankumar18/event-booking/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -72,13 +73,17 @@ func LoginUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid password"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "user logged in successfully"})
+	token, err := utils.GenerateToken(existingUser.ID, string(existingUser.Role))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not generate token"})
+	}
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
 func translateValidationErrors(ve validator.ValidationErrors) map[string]string {
 	errs := make(map[string]string)
 	for _, fe := range ve {
-		errs[fe.Field()] = fe.Tag() // You can improve this by providing custom messages
+		errs[fe.Field()] = fe.Tag()
 	}
 	return errs
 }
