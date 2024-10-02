@@ -15,5 +15,5 @@ type Event struct {
 	Location       string    `json:"location" binding:"required"`
 	CreatorID      uint      `json:"creator_id"`
 	SeatsAvailable int       `json:"seats_available" binding:"required"`
-	Price          int       `json:"price"`
+	Price          float64   `json:"price"`
 }
