@@ -15,6 +15,7 @@ require (
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
+	github.com/confluentinc/confluent-kafka-go v1.9.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.5 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
@@ -44,5 +45,6 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
+	gopkg.in/confluentinc/confluent-kafka-go.v1 v1.8.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

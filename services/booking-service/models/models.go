@@ -15,5 +15,5 @@ type Booking struct {
 	EventID    uint    `json:"event_id"`
 	Status     Status  `json:"status"`
 	SeatsTaken int     `json:"seats_taken"`
-	Price      float64 `json:"price"`
+	Price      float64 `json:"price" nullable:"true"`
 }
