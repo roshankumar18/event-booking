@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/roshankumar18/event-booking/services/booking-service/database"
-	"github.com/roshankumar18/event-booking/services/booking-service/kafka"
+	"github.com/roshankumar18/event-booking/pkg/database"
+	"github.com/roshankumar18/event-booking/pkg/kafka"
 	"github.com/roshankumar18/event-booking/services/booking-service/models"
 	"github.com/roshankumar18/event-booking/utils"
 )
@@ -113,7 +112,7 @@ func ProduceBookingMessage(userId, eventId uint, seatsTaken int, role string) er
 }
 
 func checkSeatsAvailability(eventID uint, seatsNeeded int) (bool, error) {
-	url := "http://" + os.Getenv("EVENT_SERVICE_URL") + "/events/?event_id=" + fmt.Sprint(eventID)
+	url := "http://" + utils.GoDotEnvVariable("EVENT_SERVICE_URL") + "/events/?event_id=" + fmt.Sprint(eventID)
 	return makeHTTPGetRequest(url, seatsNeeded)
 }
 
