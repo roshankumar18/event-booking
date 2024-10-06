@@ -39,6 +39,7 @@ func CreateBooking(c *gin.Context) {
 		return
 	}
 	userID, _ := c.Get("userID")
+	userEmail, _ := c.Get("email")
 	booking := models.Booking{
 		UserID:     userID.(uint),
 		EventID:    bookingRequest.EventID,
@@ -64,10 +65,31 @@ func CreateBooking(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not produce booking message"})
 		return
 	}
+	go ProduceNotificationMessage(userID.(uint), bookingRequest.EventID, bookingRequest.SeatsTaken, userEmail.(string))
 	c.JSON(http.StatusOK, gin.H{"message": "booking created successfully",
 		"booking": booking})
 }
-
+func ProduceNotificationMessage(userId uint, eventId uint, seatsTaken int, email string) error {
+	type NotificationMessage struct {
+		UserID     uint   `json:"user_id"`
+		EventID    uint   `json:"event_id"`
+		SeatsTaken int    `json:"seats_taken"`
+		Timestamp  int64  `json:"timestamp"`
+		Email      string `json:"email"`
+	}
+	notificationMessage := NotificationMessage{
+		UserID:     userId,
+		EventID:    eventId,
+		SeatsTaken: seatsTaken,
+		Timestamp:  time.Now().Unix(),
+		Email:      email,
+	}
+	json, err := json.Marshal(notificationMessage)
+	if err != nil {
+		return fmt.Errorf("failed to serialize message: %v", err)
+	}
+	return kafka.ProduceMessage("booking-notifications", string(json))
+}
 func ProduceBookingMessage(userId, eventId uint, seatsTaken int, role string) error {
 	type BookingMessage struct {
 		UserID     uint   `json:"user_id"`

@@ -73,7 +73,7 @@ func LoginUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid password"})
 		return
 	}
-	token, err := utils.GenerateToken(existingUser.ID, string(existingUser.Role))
+	token, err := utils.GenerateToken(existingUser.ID, string(existingUser.Role), existingUser.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not generate token"})
 	}

@@ -10,11 +10,12 @@ import (
 
 var jwtKey = []byte("your_secret_key")
 
-func GenerateToken(userId uint, role string) (string, error) {
+func GenerateToken(userId uint, role string, email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userId": userId,
 		"role":   role,
 		"exp":    time.Now().Add(time.Hour).Unix(),
+		"email":  email,
 	})
 
 	tokenString, err := token.SignedString(jwtKey)
@@ -26,6 +27,7 @@ type Claims struct {
 	UserID uint   `json:"userId"`
 	Role   string `json:"role"`
 	Exp    int64  `json:"exp"`
+	Email  string `json:"email"`
 	jwt.RegisteredClaims
 }
 
