@@ -38,3 +38,14 @@ func CreateEvent(c *gin.Context) {
 		"event": event})
 
 }
+
+func GetEvent(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var event models.Event
+	if err := database.DB.First(&event, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not get event"})
+		return
+	}
+	//send event response to client
+	c.JSON(http.StatusOK, gin.H{"event": event})
+}

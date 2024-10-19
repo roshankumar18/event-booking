@@ -112,7 +112,7 @@ func ProduceBookingMessage(userId, eventId uint, seatsTaken int, role string) er
 }
 
 func checkSeatsAvailability(eventID uint, seatsNeeded int) (bool, error) {
-	url := "http://" + utils.GoDotEnvVariable("EVENT_SERVICE_URL") + "/events/?event_id=" + fmt.Sprint(eventID)
+	url := "http://" + utils.GoDotEnvVariable("EVENT_SERVICE_URL") + "/events/?id=" + fmt.Sprint(eventID)
 	return makeHTTPGetRequest(url, seatsNeeded)
 }
 
@@ -136,12 +136,14 @@ func makeHTTPGetRequest(url string, seatsNeeded int) (bool, error) {
 	}
 
 	var event struct {
-		SeatsTaken int `json:"seats_taken"`
-	}
-	err = json.Unmarshal(body, &event)
-	if err != nil {
-		return false, err
+		SeatsAvailable int     `json:"seats_available"`
+		Price          float64 `json:"price"`
 	}
 
-	return event.SeatsTaken >= seatsNeeded, nil
+	err = json.Unmarshal(body, &event)
+	if err != nil {
+		return false, fmt.Errorf("event not found")
+	}
+	return event.SeatsAvailable >= seatsNeeded, nil
+
 }
