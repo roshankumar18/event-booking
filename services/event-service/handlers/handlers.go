@@ -49,3 +49,16 @@ func GetEvent(c *gin.Context) {
 	//send event response to client
 	c.JSON(http.StatusOK, gin.H{"event": event})
 }
+
+func UpdateEventSeats(eventID uint, seatsTaken int) error {
+	var event models.Event
+	if err := database.DB.First(&event, eventID).Error; err != nil {
+		return err
+	}
+	event.SeatsAvailable -= seatsTaken
+	if err := database.DB.Save(&event).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
