@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/roshankumar18/event-booking/utils"
 )
 
 type NotificationMessage struct {
@@ -19,9 +20,8 @@ type NotificationMessage struct {
 }
 
 func sendEmail(to string, body string) {
-	from := "youremail@example.com"
-	password := "your-email-password"
-
+	from := utils.GoDotEnvVariable("EMAIL_FROM")
+	password := utils.GoDotEnvVariable("EMAIL_PASSWORD")
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
