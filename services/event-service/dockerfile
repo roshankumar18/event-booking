@@ -1,0 +1,9 @@
+FROM golang:1.23
+WORKDIR /app
+COPY ../../../event-booking/go.mod ./ 
+RUN go mod download
+COPY . .
+RUN go build -o /app/build/event-service
+EXPOSE 4000
+ENTRYPOINT ["/app/build/event-service"]
+CMD ["/docker-event-service"]
