@@ -62,3 +62,13 @@ func UpdateEventSeats(eventID uint, seatsTaken int) error {
 
 	return nil
 }
+
+func GetAllEvent(c *gin.Context) {
+	var events models.Event
+	if err := database.DB.Where("seats_available > 0").Find(&events).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not get event"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"events": events})
+
+}
