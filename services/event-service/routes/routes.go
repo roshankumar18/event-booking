@@ -9,6 +9,6 @@ import (
 func RegisterRoutes(router *gin.Engine) {
 	user := router.Group("/events")
 	{
-		user.Use(middleware.AuthMiddleware()).POST("/", handlers.CreateEvent).GET("/:id", handlers.GetEvent)
+		user.Use(middleware.AuthMiddleware()).POST("/", handlers.CreateEvent).GET("/:id", handlers.GetEvent).GET("/", handlers.GetAllEvent)
 	}
 }
