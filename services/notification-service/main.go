@@ -43,6 +43,7 @@ func main() {
 		"bootstrap.servers": "localhost:9092",
 		"group.id":          "notification-service",
 		"auto.offset.reset": "earliest",
+		"security.protocol": "PLAINTEXT",
 	})
 
 	if err != nil {

@@ -34,6 +34,7 @@ func startConsumer() {
 		"bootstrap.servers": "localhost:9092",
 		"group.id":          "event-service-group",
 		"auto.offset.reset": "earliest",
+		"security.protocol": "PLAINTEXT",
 	})
 
 	if err != nil {

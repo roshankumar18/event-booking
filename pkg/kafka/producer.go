@@ -12,7 +12,7 @@ var Producer *kafka.Producer
 func InitKafkaProducer() error {
 	var err error
 	Producer, err = kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "host1:9092,host2:9092",
+		"bootstrap.servers": "localhost:9092",
 		"client.id":         "booking-service-producer",
 		"acks":              "all"})
 
