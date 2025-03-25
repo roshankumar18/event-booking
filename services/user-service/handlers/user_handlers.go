@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,7 @@ func RegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "email is required"})
 		return
 	}
+	fmt.Println(user.Role, "fsdfssdfdsf", user)
 	if user.Role == models.Creator || user.Role == models.Booker {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "role is required"})
 		return
