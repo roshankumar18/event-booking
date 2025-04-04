@@ -46,12 +46,28 @@ services:
       start_period: 10s
     restart: always
 
-  webserver:
+  user-service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: services/user-service/dockerfile 
     ports:
       - 8080:8080
+    environment:
+      - DB_CONNECTION_STRING=host=postgres port=5432 user=postgres password=postgres dbname=mydb sslmode=disable
+      - JWT_SECRET_KEY:{JWT_SECRET_KEY}
+    networks:
+      - my-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure:5
+  
+  booking-service:
+    build:
+      context: .
+      dockerfile: services/booking-service/dockerfile 
+    ports:
+      - 8081:8081
     environment:
       - DB_CONNECTION_STRING=host=postgres port=5432 user=postgres password=postgres dbname=mydb sslmode=disable
       - JWT_SECRET_KEY:{JWT_SECRET_KEY}

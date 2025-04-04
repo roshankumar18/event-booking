@@ -1,0 +1,27 @@
+FROM golang:1.23
+
+WORKDIR /app
+
+COPY go.work ./
+
+COPY services/user-service/ /app/services/user-service/
+COPY services/event-service/ /app/services/event-service/
+COPY services/notification-service/ /app/services/notification-service/
+COPY services/booking-service/go.mod services/booking-service/go.sum ./services/booking-service/
+COPY pkg/go.mod pkg/go.sum ./pkg/
+COPY utils/go.mod utils/go.sum ./utils/
+
+RUN go mod download
+
+
+COPY services/booking-service/ ./services/booking-service/
+COPY pkg/ ./pkg/
+COPY utils/ ./utils/
+
+WORKDIR /app/services/user-service
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o user-service ./main.go
+
+EXPOSE 8001 
+
+CMD ["./user-service"]
